@@ -11,7 +11,7 @@ from plugins.glovar import prefix
 @Client.on_message(filters.private & filters.incoming & ~filters.edited
                    & mod_filters.command(["help"], prefix))
 async def cmd_help(client: Client, message: types.Message):
-    help_cmd = get_command_type(message)
+    help_cmd = get_command_type(message).lstrip("".join(prefix))
 
     try:
         if help_cmd:
@@ -20,10 +20,10 @@ async def cmd_help(client: Client, message: types.Message):
                 return
 
             usage_str_builder = [
-                f"Usage - {help_cmd}",
+                f"Usage - {prefix[0]}{help_cmd}",
                 "",
                 "Description:",
-                cmd_desc[help_cmd],
+                bold(cmd_desc[help_cmd]),
                 "",
                 f"Usage: {prefix[0]}{html.escape(cmd_usage[help_cmd])}",
             ]
@@ -31,7 +31,7 @@ async def cmd_help(client: Client, message: types.Message):
                 usage_str_builder.extend((
                     "",
                     "Arguments:",
-                    "\n".join(f"{arg} - {desc}" for arg, desc in cmd_args[help_cmd].items())
+                    "\n".join(f"{bold(arg)} - {italic(desc)}" for arg, desc in cmd_args[help_cmd].items())
                 ))
 
             detail_usage_text = "\n".join(usage_str_builder)
