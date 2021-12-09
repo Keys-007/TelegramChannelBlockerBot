@@ -1,8 +1,7 @@
 from typing import Optional
 
 from loguru import logger
-from pyrogram import Client, types, filters, errors, raw
-from pyrogram.raw import functions
+from pyrogram import Client, types, filters, errors
 
 from plugins.filters import mod_filters
 from plugins.functions import database
@@ -32,13 +31,19 @@ async def get_channel_id(client: Client, message: types.Message) -> Optional[int
     mentions = get_message_mentions(message)
     if len(mentions) == 0:
         # Say something that is empty
-        await message.reply_text(f"Incorrect usage.", True)
+        try:
+            await message.reply_text(f"Incorrect usage.", True)
+        except errors.BadRequest:
+            pass
         return
 
     str_mention = mentions[0]
     if not isinstance(str_mention, str):
         # User is not allowed
-        await message.reply_text(f"User is not a channel.", True)
+        try:
+            await message.reply_text(f"User is not a channel.", True)
+        except errors.BadRequest:
+            pass
         return
     try:
         channel_peer = await client.get_chat(str_mention)
@@ -50,9 +55,7 @@ async def get_channel_id(client: Client, message: types.Message) -> Optional[int
         channel_id = channel_peer.id
 
         return get_raw_ch_number(channel_id)
-    except (errors.ChannelPrivate, errors.ChannelPrivate, errors.ChannelPublicGroupNa, errors.ChatNotModified):
-        return
-    except (errors.UsernameOccupied, errors.UsernameInvalid):
+    except errors.BadRequest:
         return
     except:  # noqa
         logger.exception(f"Error while resolving peer {str_mention} in function get_channel_id")
@@ -87,6 +90,8 @@ async def cmd_get_whitelist(client: Client, message: types.Message):
         result = database.match_whitelist(group_id=group_id, channel_id=channel_id)
         result_text = italic("not whitelisted") if not result else bold("whitelisted")
         await message.reply_text("Channel is " + result_text, True)
+    except errors.BadRequest:
+        pass
     except:  # noqa
         logger.exception(f"Error while running command get whitelist for user {uid} from group {cid}")
 
@@ -131,6 +136,8 @@ async def cmd_add_whitelist(client: Client, message: types.Message):
                 logger.debug(f"Unbanned channel {channel_id} for group {cid}")
         except errors.ChatAdminRequired:
             pass
+    except errors.BadRequest:
+        return
     except:  # noqa
         logger.exception(f"Error while running command add whitelist for user {uid} from group {cid}")
 
@@ -167,5 +174,7 @@ async def cmd_remove_whitelist(client: Client, message: types.Message):
         # Remove channel into whitelist for this group
         await database.remove_whitelist(group_id=group_id, channel_id=channel_id)
         await message.reply_text("Channel removed from whitelist.", True)
+    except errors.BadRequest:
+        return
     except:  # noqa
         logger.exception(f"Error while running command remove whitelist for user {uid} from group {cid}")

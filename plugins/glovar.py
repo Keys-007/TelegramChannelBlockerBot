@@ -8,9 +8,9 @@ from pyrogram import Client
 
 bot_client: Optional[Client] = None
 bot_name: Optional[str] = None
-linked_channel_db: Optional[sqlite3.Connection] = sqlite3.connect("link_channel_cache.sqlite")
-whitelist_db: Optional[sqlite3.Connection] = sqlite3.connect("whitelist_data.sqlite")
-stat_db: Optional[sqlite3.Connection] = sqlite3.connect("stat_data.sqlite")
+linked_channel_db: sqlite3.Connection = sqlite3.connect("link_channel_cache.sqlite")
+whitelist_db: sqlite3.Connection = sqlite3.connect("whitelist_data.sqlite")
+stat_db: sqlite3.Connection = sqlite3.connect("stat_data.sqlite")
 
 # [settings]
 prefix: list = ["/"]

@@ -1,5 +1,5 @@
 from loguru import logger
-from pyrogram import Client, types, filters
+from pyrogram import Client, types, filters, errors
 
 from plugins.filters import mod_filters
 from plugins.functions import database
@@ -33,5 +33,7 @@ async def cmd_stat(client: Client, message: types.Message):
             await message.reply_text("This group didn't have ban record yet.", True)
             return
         await message.reply_text(f"Total channel(s) banned: {result_count}", True)
+    except errors.BadRequest:
+        return
     except:  # noqa
         logger.exception(f"Error when running command stat for {uid} in {cid}")

@@ -1,3 +1,4 @@
+import html
 from loguru import logger
 from pyrogram import Client, types, filters
 
@@ -24,7 +25,7 @@ async def cmd_help(client: Client, message: types.Message):
                 "Description:",
                 cmd_desc[help_cmd],
                 "",
-                f"Usage: {prefix[0]}{cmd_usage[help_cmd]}",
+                f"Usage: {prefix[0]}{html.escape(cmd_usage[help_cmd])}",
             ]
             if cmd_args.get(help_cmd) is not None:
                 usage_str_builder.extend((
@@ -38,7 +39,7 @@ async def cmd_help(client: Client, message: types.Message):
         else:
             simple_usage_txt = ["Simple usage:"]
             for cmd_name, usage in cmd_usage.items():
-                simple_usage_txt.append(f"\u2022 {bold(cmd_name)} - {prefix[0]}{usage}")
+                simple_usage_txt.append(f"\u2022 {bold(cmd_name)} - {prefix[0]}{html.escape(usage)}")
             simple_usage_txt.extend(("", italic(f"Do {prefix[0]}help [command] for details")))
             if len(prefix) > 1:
                 available_prefix = ", ".join(f"'{pfx}'" for pfx in prefix)
@@ -46,4 +47,4 @@ async def cmd_help(client: Client, message: types.Message):
 
             await message.reply_text("\n".join(simple_usage_txt))
     except:  # noqa
-        logger.exception(f"Help command error for user {message.from_user.id} with arguments \"{cmd_arg}\"")
+        logger.exception(f"Help command error for user {message.from_user.id} with argument \"{help_cmd}\"")

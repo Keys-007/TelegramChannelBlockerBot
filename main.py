@@ -6,10 +6,8 @@ from pyrogram import Client, idle
 from plugins.commands import init_bot_commands
 
 
-def init_link_channel():
-    """
-    Initialize linked channel database's table
-    """
+def init_database_table():
+    """Initialize database table(s)"""
     from plugins.glovar import linked_channel_db, whitelist_db, stat_db
 
     sql_path = "plugins/sqls/"
@@ -49,7 +47,7 @@ def init_link_channel():
 
 async def main():
     import plugins.glovar
-    init_link_channel()
+    init_database_table()
     bot_client = Client("bot")
     setattr(plugins.glovar, "bot_client", bot_client)
     # Get username first before fully initialize
