@@ -32,6 +32,8 @@ cmd_args = {
     },
     "is": {
         "channel_id": "Channel ID",
+        "reply": "Reply to a message sent by channel",
+        "mention": "Mention a channel (@Telegram)"
     },
     "cwl": {
         "channel_id": "Channel ID",
