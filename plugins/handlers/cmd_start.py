@@ -4,6 +4,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from plugins.filters import mod_filters
 from plugins.glovar import prefix
+from plugins.functions.utils import code
 from plugins.handlers.cmd_whitelist import get_channel_id
 
 
@@ -29,7 +30,7 @@ async def cmd_start(client: Client, message: types.Message):
         f"2. Give @{bot_name} ban user and delete message permission",
         "",
         "Commands:",
-        "You can find all available commands with a [/] icon",
+        f"You can find all available commands with a {code('[/]')} icon",
         "(Or a icon called Menu)",
         "",
         f"For command usage, do {prefix[0]}help [command]"
