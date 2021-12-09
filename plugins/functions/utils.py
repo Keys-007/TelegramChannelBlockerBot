@@ -88,3 +88,16 @@ def bold(text: Any) -> str:
         logger.exception("Bold error")
 
     return ""
+
+
+def code(text: Any) -> str:
+    # Get a code text
+    try:
+        text = str(text).strip()
+
+        if text:
+            return f"<code>{escape(text)}</code>"
+    except:  # noqa
+        logger.exception("Code error")
+
+    return ""
