@@ -50,13 +50,7 @@ async def get_linked_group(*, channel_peer: base.InputChannel = None, channel_id
 
         # Get channel info by requesting
         result: types.messages.ChatFull
-        if channel_id is not None:
-            result = await bot_client.send(
-                functions.channels.GetFullChannel(
-                    channel=channel_peer
-                )
-            )
-        elif channel_peer is not None:
+        if channel_peer is not None:
             result = await bot_client.send(
                 functions.channels.GetFullChannel(
                     channel=channel_peer
