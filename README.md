@@ -40,14 +40,15 @@ Currently, (07-12-2021) Telegram didn't add those APIs in the official Schema.
 
 Pre requirements:
 - (_Optional_) virtual environment (venv)
-- Python 3.8+ (pypy should also support, but not tested.)
+- Python 3.8+ (pypy3 should also support, but not tested.)
 
 This project uses [poetry](https://python-poetry.org) to install dependencies.
 \
 Please install poetry globally by using `pip install poetry`
 
 ```shell
-$ poetry init
+$ poetry shell
+$ poetry install
 
 Using version ^X.X.X for loguru
 Using version ^X.X.X for Pyrogram
@@ -78,7 +79,7 @@ $
 
 Rename `config.ini.example` to `config.ini` and edit the config
 
-Simply run this script with `python3 main.py`
+Simply run this script with `poetry shell & python3 main.py`
 \
 and add it to your group, it will automatically start working.
 
